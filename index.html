@@ -322,6 +322,7 @@ select{border:1px solid var(--line); background:var(--panel); color:var(--text);
 .ti:last-child{padding-bottom:0}
 .ti::before{content:""; position:absolute; left:-20.5px; top:8px; width:7px; height:7px;
             border-radius:50%; background:var(--bg); border:1.5px solid var(--accent)}
+.ti.ongoing::before{background:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
 .ti .t{font-family:'Newsreader',Georgia,serif; font-weight:500; font-size:16.5px;
        letter-spacing:-.01em}
 .ti .o{font-weight:600; font-size:13.5px; color:var(--text); margin-top:1px}
@@ -631,7 +632,25 @@ const CONFIG = {
       d:{en:"2023 — 2027 (expected)",tr:"2023 — 2027 (beklenen)"} }
   ],
   experience: [
-    { t:{en:"Summer Internship",tr:"Yaz Stajı"}, org:"Anadolu Sigorta",
+    { t:{en:"IS Intern",tr:"BS Stajyeri"}, org:"Horoz Lojistik", ongoing:true,
+      s:{en:"Building TOROS, a route-optimisation system, and ege-balancer, a reverse proxy / load balancer; working on distributed systems and network infrastructure.",
+         tr:"Rota optimizasyon sistemi TOROS ve ters proxy / yük dengeleyici ege-balancer'ı geliştiriyorum; dağıtık sistemler ve ağ altyapısı üzerine çalışıyorum."},
+      d:{en:"August — September 2026 · İstanbul",tr:"Ağustos — Eylül 2026 · İstanbul"},
+      details:{
+        en:[
+          "TOROS (Traffic-Oriented Route Optimisation System): Developed a route-optimisation solution that analyses real-time and predictive traffic levels to improve delivery efficiency for cargo and logistics companies.",
+          "Cost & time optimisation: Integrated a range of algorithms to compute the cheapest and time-shortest routes, cutting operational costs across heavy delivery workloads.",
+          "ege-balancer (reverse proxy & load balancer): Designed and coded a custom reverse proxy / load balancer to put data communication, network protocols and cross-server load distribution in distributed systems into practice.",
+          "System architecture & network management: Studied server-traffic routing, high availability and uninterrupted data-flow mechanisms in depth, working on end-to-end infrastructure performance."
+        ],
+        tr:[
+          "TOROS (Trafik Odaklı Rota Optimizasyon Sistemi): Kargo ve lojistik şirketlerinin teslimat verimliliğini artırmak amacıyla anlık ve öngörüye dayalı trafik seviyelerini analiz eden rota optimizasyon çözümünü geliştirdim.",
+          "Maliyet ve Süre Optimizasyonu: Çeşitli algoritmalar entegre ederek yoğun teslimat süreçlerinde operasyon maliyetlerini düşüren en ucuz ve süre bazında en kısa güzergahların hesaplanmasını sağladım.",
+          "ege-balancer (Reverse Proxy & Load Balancer): Dağıtık sistemlerdeki veri iletişimini, ağ protokollerini ve sunucular arası yük dağıtımını pratikleştirmek için özel bir ters proxy / yük dengeleyici sistemi tasarlayıp kodladım.",
+          "Sistem Mimarisi ve Ağ Yönetimi: Sunucu trafiği yönlendirme, yüksek erişilebilirlik (high availability) ve kesintisiz veri akışı mekanizmalarını derinlemesine inceleyerek uçtan uca altyapı performansı üzerine çalıştım."
+        ]
+      } },
+    { t:{en:"IT Software Development Intern",tr:"BT Yazılım Geliştirme Stajyeri"}, org:"Anadolu Sigorta",
       s:{en:"Built a web-based project in HTML, studied internal company systems and learned agile working practices.",
          tr:"HTML ile web tabanlı bir proje geliştirdim, şirket içi sistemleri inceledim ve çevik çalışma pratiklerini öğrendim."},
       d:{en:"July — August 2026 · İstanbul",tr:"Temmuz — Ağustos 2026 · İstanbul"},
@@ -651,7 +670,7 @@ const CONFIG = {
           "Çevik (agile) çalışmanın inceliklerini öğrendim."
         ]
       } },
-    { t:{en:"Summer Internship",tr:"Yaz Stajı"}, org:"Enocta",
+    { t:{en:"Sales & Business Development Intern",tr:"Satış ve İş Geliştirme Stajyeri"}, org:"Enocta",
       s:{en:"Data organisation and analysis in Excel, data cleaning in a CRM system; contributed to sales and business development.",
          tr:"Excel'de veri düzenleme ve analiz, CRM sisteminde veri temizliği; satış ve iş geliştirme faaliyetlerine katkı."},
       d:{en:"July — August 2025 · İstanbul",tr:"Temmuz — Ağustos 2025 · İstanbul"},
@@ -775,7 +794,7 @@ $('#picFb').textContent = CONFIG.name.split(/\s+/).slice(0,2).map(w=>w[0]).join(
 
 const tlHtml = (a, kind) => a.map((i,idx)=>{
   const hasDet = kind==='exp' && i.details && L(i.details) && L(i.details).length;
-  return `<div class="ti${hasDet?' clickable':''}"${hasDet?` role="button" tabindex="0" data-exp="${idx}"`:''}>
+  return `<div class="ti${hasDet?' clickable':''}${i.ongoing?' ongoing':''}"${hasDet?` role="button" tabindex="0" data-exp="${idx}"`:''}>
   <div class="t">${esc(L(i.t))}${hasDet?`<span class="more">${t('exp.more')} →</span>`:''}</div>
   ${i.org ? `<div class="o">${esc(i.org)}</div>` : ''}
   ${i.s   ? `<div class="s">${esc(L(i.s))}</div>`   : ''}
