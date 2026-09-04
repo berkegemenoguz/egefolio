@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,6 +82,19 @@ nav a.nl.on{color:var(--text)}
   color:var(--dim); cursor:pointer; transition:.15s;
 }
 .tbtn:hover{color:var(--text); border-color:var(--faint)}
+.langbtn{
+  height:30px; padding:0 11px; margin-left:auto;
+  display:inline-flex; align-items:center; gap:5px;
+  background:none; border:1px solid var(--line); border-radius:7px;
+  color:var(--dim); cursor:pointer; transition:.15s;
+  font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; letter-spacing:.06em;
+}
+.langbtn::before{
+  content:""; width:6px; height:6px; border-radius:50%;
+  background:var(--accent); opacity:.8;
+}
+.langbtn:hover{color:var(--text); border-color:var(--accent)}
+nav .nl:first-child{margin-right:0}
 
 /* ---------------- başlık alanı ---------------- */
 header{padding:64px 0 46px}
@@ -332,12 +345,13 @@ footer a{color:var(--dim)}
 
 <nav>
   <div class="wrap">
-    <a class="nl" href="#hakkimda">Hakkımda</a>
-    <a class="nl" href="#aktivite">Aktivite</a>
-    <a class="nl" href="#projeler">Projeler</a>
-    <a class="nl" href="#kulupler">Kulüpler</a>
-    <a class="nl" href="#cv">CV</a>
-    <button class="tbtn" id="themeBtn" aria-label="Tema">
+    <a class="nl" href="#hakkimda" data-i18n="nav.about">About</a>
+    <a class="nl" href="#aktivite" data-i18n="nav.activity">Activity</a>
+    <a class="nl" href="#projeler" data-i18n="nav.projects">Projects</a>
+    <a class="nl" href="#kulupler" data-i18n="nav.clubs">Clubs</a>
+    <a class="nl" href="#cv" data-i18n="nav.cv">CV</a>
+    <button class="langbtn" id="langBtn" aria-label="Language">EN</button>
+    <button class="tbtn" id="themeBtn" aria-label="Theme">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
   </div>
@@ -375,7 +389,7 @@ footer a{color:var(--dim)}
         </a>
         <a class="btn" id="mailBtn" href="#">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
-          E-posta
+          <span data-i18n="btn.email">Email</span>
         </a>
       </div>
     </div>
@@ -385,8 +399,8 @@ footer a{color:var(--dim)}
 <!-- ===== AKTİVİTE ===== -->
 <section id="aktivite">
   <div class="shead">
-    <h2>Commit takvimi</h2>
-    <div class="snote">GitHub'dan canlı · bir kareye tıkla</div>
+    <h2 data-i18n="cal.title">Commit calendar</h2>
+    <div class="snote" data-i18n="cal.note">live from GitHub · click a square</div>
   </div>
 
   <div class="calbar">
@@ -400,7 +414,7 @@ footer a{color:var(--dim)}
            stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M25 5H2"/><path d="M6 1 2 5l4 4"/>
       </svg>
-      <span>basmak isteyebilirsin</span>
+      <span data-i18n="game.poke">you might want to press it</span>
     </span>
     <div class="years" id="years"></div>
   </div>
@@ -410,7 +424,7 @@ footer a{color:var(--dim)}
       <div class="calin">
         <div class="months" id="months"></div>
         <div class="calrow">
-          <div class="dcol"><span></span><span>Pzt</span><span></span><span>Çar</span><span></span><span>Cum</span><span></span></div>
+          <div class="dcol"><span></span><span data-i18n="day.mon">Mon</span><span></span><span data-i18n="day.wed">Wed</span><span></span><span data-i18n="day.fri">Fri</span><span></span></div>
           <div id="grid"></div>
         </div>
       </div>
@@ -430,20 +444,20 @@ footer a{color:var(--dim)}
 <!-- ===== PROJELER ===== -->
 <section id="projeler">
   <div class="shead">
-    <h2>Projeler</h2>
+    <h2 data-i18n="proj.title">Projects</h2>
     <div class="snote" id="projCount"></div>
   </div>
   <div class="tools">
     <div class="srch">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Ara…">
+      <input id="q" type="search" placeholder="Search…" data-i18n-ph="proj.search">
     </div>
     <select id="langFilter"><option value="">Tüm diller</option></select>
     <select id="sortBy">
-      <option value="updated">Son güncellenen</option>
-      <option value="stars">Yıldız</option>
-      <option value="name">A – Z</option>
-      <option value="created">En yeni</option>
+      <option value="updated" data-i18n="sort.updated">Recently updated</option>
+      <option value="stars" data-i18n="sort.stars">Stars</option>
+      <option value="name" data-i18n="sort.name">A – Z</option>
+      <option value="created" data-i18n="sort.created">Newest</option>
     </select>
   </div>
   <div class="plist" id="projects">
@@ -456,7 +470,7 @@ footer a{color:var(--dim)}
 <!-- ===== KULÜPLER ===== -->
 <section id="kulupler">
   <div class="shead">
-    <h2>Kulüpler ve topluluklar</h2>
+    <h2 data-i18n="clubs.title">Clubs &amp; communities</h2>
   </div>
   <div class="clubs" id="clubs"></div>
 </section>
@@ -464,20 +478,22 @@ footer a{color:var(--dim)}
 <!-- ===== CV ===== -->
 <section id="cv">
   <div class="shead">
-    <h2>Özgeçmiş</h2>
+    <h2 data-i18n="cv.title">Résumé</h2>
   </div>
   <div class="two">
     <div>
-      <h4>Eğitim</h4>
+      <h4 data-i18n="cv.education">Education</h4>
       <div class="tl" id="cvEdu"></div>
-      <h4 style="margin-top:28px">Deneyim</h4>
+      <h4 style="margin-top:28px" data-i18n="cv.experience">Experience</h4>
       <div class="tl" id="cvExp"></div>
     </div>
     <div>
-      <h4>Teknolojiler</h4>
+      <h4 data-i18n="cv.tech">Technologies</h4>
       <div class="chips" id="cvSkills"></div>
-      <h4 style="margin-top:26px">İlgili dersler</h4>
+      <h4 style="margin-top:26px" data-i18n="cv.courses">Relevant coursework</h4>
       <div class="chips" id="cvInterests"></div>
+      <h4 style="margin-top:26px" data-i18n="cv.languages">Languages</h4>
+      <div class="chips" id="cvLangs"></div>
     </div>
   </div>
 </section>
@@ -497,63 +513,100 @@ footer a{color:var(--dim)}
 const CONFIG = {
   github: "berkegemenoguz",
   name:   "Berk Egemen Oğuz",
-  role:   "Bilgisayar Mühendisliği · Backend & Veri",
+  role:   { en:"Computer Engineering · Backend & Data", tr:"Bilgisayar Mühendisliği · Backend & Veri" },
   email:  "berkegemenoguz@hotmail.com",
   linkedin: "https://www.linkedin.com/in/berkegeoguz",
-  photo:  "",            // boşsa github.com/<kullanıcı>.png kullanılır
+  photo:  "",
   cv:     "cv.pdf",
 
-  about: [
-    "İstanbul Arel Üniversitesi'nde bilgisayar mühendisliği son sınıf öğrencisiyim. İstanbul'da oturuyorum. Hayatta kendimi geliştirmeyi ve elimden geldiğince her şeyi deneyimlemeyi kendime ilke edindim. Sıkı çalışma ahlakı ile üstesinden gelinemeyecek sorun olmadığını düşünenlerdenim.",
-    "Yazılım dünyasında farklı farklı bir sürü proje geliştirdim: Go ile bir HTTP yük dengeleyici, Python ile borsa analizi ve görüntü işleme araçları, C++ ile ağ protokolü simülasyonları, Java ile öğrenci bilgi sistemi ve web tabanlı CRM uygulamaları yazdım.",
-    "Bir şeyin nasıl çalıştığını anlamanın en iyi yolunun deneyimlemek olduğunu düşünüyorum; buradaki projelerimin çoğu da zaten böyle başladı."
-  ],
+  about: {
+    en: [
+      "I'm a final-year computer engineering student at İstanbul Arel University, based in İstanbul. I've made it a principle to keep improving myself and to experience as much as I can, and I believe there's no problem a strong work ethic can't overcome.",
+      "I've built a wide range of software: an HTTP load balancer in Go, stock-market analysis and image-processing tools in Python, network-protocol simulations in C++, and a student information system and web-based CRM in Java.",
+      "I think the best way to understand how something works is to build it yourself — most of the projects here started exactly that way."
+    ],
+    tr: [
+      "İstanbul Arel Üniversitesi'nde bilgisayar mühendisliği son sınıf öğrencisiyim. İstanbul'da oturuyorum. Hayatta kendimi geliştirmeyi ve elimden geldiğince her şeyi deneyimlemeyi kendime ilke edindim. Sıkı çalışma ahlakı ile üstesinden gelinemeyecek sorun olmadığını düşünenlerdenim.",
+      "Yazılım dünyasında farklı farklı bir sürü proje geliştirdim: Go ile bir HTTP yük dengeleyici, Python ile borsa analizi ve görüntü işleme araçları, C++ ile ağ protokolü simülasyonları, Java ile öğrenci bilgi sistemi ve web tabanlı CRM uygulamaları yazdım.",
+      "Bir şeyin nasıl çalıştığını anlamanın en iyi yolunun deneyimlemek olduğunu düşünüyorum; buradaki projelerimin çoğu da zaten böyle başladı."
+    ]
+  },
 
   years: [2026, 2025],
-
   pinned:    ["ege-balancer", "borsadostu", "TOROS"],
-  hideRepos: ["berkegemenoguz"],
+  hideRepos: ["berkegemenoguz", "egefolio"],
 
-  /* Açıklamalar reponun README dosyasından çıkarıldı.
-     GitHub'daki repo "description" alanını doldurursan o öncelikli olur. */
   descriptions: {
-    "ege-balancer": "Go ile yazılmış modüler bir HTTP ters vekil sunucusu ve yük dengeleyici. Round robin, en az bağlantı ve ağırlıklı round robin algoritmaları; aktif/pasif sağlık kontrolü, Prometheus metrikleri ve SIGHUP ile yapılandırma yenileme.",
-    "borsadostu": "Öğrenciler ve küçük ölçekli yatırımcılar için borsa analiz web uygulaması. Python tarafında Plotly ve Matplotlib ile fiyat geçmişi ve teknik göstergeleri görselleştiriyor.",
-    "TOROS": "Trafik Odaklı Rota Optimizasyon Sistemi. İstanbul'da bir teslimat filosunu yöneten, Flask + PostgreSQL API üzerine kurulu sistem: teslimatları bölge ve termine göre günlere dağıtıyor, araçlara paylaştırıyor, durak sırasını TSP ile çözüyor.",
-    "AS-ADHR": "Anadolu Sigorta mobil uygulaması için tasarlanan Akıllı Kaza Asistanı prototipi. Kaza, arıza, yangın ve yaralanma senaryolarında kullanıcıyı adım adım yönlendiriyor; QR ile karşı taraf daveti, kroki çizimi, yapay zekâ ile hasar tespiti ve otomatik kaza tutanağı içeriyor.",
-    "WBOCRM": "Satış, destek ve yönetici rolleri için operasyonel CRM. React SPA → Node.js REST API → PostgreSQL dikey dilimi; JWT tabanlı rol yetkilendirme, aday puanlama algoritması ve eşzamanlı düzenleme çakışması tespiti.",
-    "subscription-tracker": "Kişisel abonelikleri takip eden full-stack uygulama. Node.js/Express ve PostgreSQL arka uç, JWT ile kullanıcı bazlı veri izolasyonu; abonelik ve ödeme kartı yönetimi, aylık harcama özeti.",
-    "student_info_system": "Java ile yazılmış öğrenci bilgi sistemi — öğrenci, ders ve not kayıtlarının yönetimi.",
-    "flappy-dunk": "Tarayıcıda çalışan basketbol arcade oyunu. HTML5 Canvas ve vanilla JavaScript ile yerçekimi fiziği, coin ve mağaza sistemi, altı farklı top görünümü, localStorage ile ilerleme kaydı.",
-    "mobile-document-enhancement": "Telefonla çekilmiş belge fotoğraflarını tarama kalitesine çıkaran Python işlem hattı: perspektif düzeltme, gürültü azaltma ve keskinleştirme, Sauvola ile adaptif eşiklemenin karşılaştırılması; sonuçlar MSE ve PSNR ile ölçülüyor.",
-    "DCS_UDP": "UDP üzerinde Nagle (gönderici) ve Clark (alıcı) algoritmalarını gösteren C++ istemci/sunucu uygulaması. Silly Window Syndrome problemini ele alıyor; algoritmalar açıkken ve kapalıyken ağ verimliliği karşılaştırılabiliyor.",
-    "Hotel-Reservation-System": "Nesne yönelimli programlama dersi bitirme projesi. Java ile konsol tabanlı otel rezervasyon sistemi; kalıtım ve çok biçimlilik ile normal/suit oda tipleri, müşteri yönetimi ve CSV ile veri saklama."
+    "ege-balancer": {
+      en:"A modular HTTP reverse proxy and load balancer written in Go. Distributes traffic across backends with round-robin, least-connections and weighted strategies; active/passive health checks, Prometheus metrics and SIGHUP config reload.",
+      tr:"Go ile yazılmış modüler bir HTTP ters vekil sunucusu ve yük dengeleyici. Round robin, en az bağlantı ve ağırlıklı round robin algoritmaları; aktif/pasif sağlık kontrolü, Prometheus metrikleri ve SIGHUP ile yapılandırma yenileme." },
+    "borsadostu": {
+      en:"A stock-market analysis web app for students and small investors. Visualises price history and technical indicators in Python with Plotly and Matplotlib.",
+      tr:"Öğrenciler ve küçük ölçekli yatırımcılar için borsa analiz web uygulaması. Python tarafında Plotly ve Matplotlib ile fiyat geçmişi ve teknik göstergeleri görselleştiriyor." },
+    "TOROS": {
+      en:"Traffic-Oriented Route Optimisation System. Built on a Flask + PostgreSQL API to manage a delivery fleet in İstanbul: distributes deliveries to days by region and deadline, assigns them to vehicles, and solves stop order with TSP.",
+      tr:"Trafik Odaklı Rota Optimizasyon Sistemi. İstanbul'da bir teslimat filosunu yöneten, Flask + PostgreSQL API üzerine kurulu sistem: teslimatları bölge ve termine göre günlere dağıtıyor, araçlara paylaştırıyor, durak sırasını TSP ile çözüyor." },
+    "AS-ADHR": {
+      en:"A Smart Accident Assistant prototype designed for the Anadolu Sigorta mobile app. Guides the user step by step through accident, breakdown, fire and injury scenarios; includes QR counter-party invites, sketch drawing, AI damage assessment and automatic accident reports.",
+      tr:"Anadolu Sigorta mobil uygulaması için tasarlanan Akıllı Kaza Asistanı prototipi. Kaza, arıza, yangın ve yaralanma senaryolarında kullanıcıyı adım adım yönlendiriyor; QR ile karşı taraf daveti, kroki çizimi, yapay zekâ ile hasar tespiti ve otomatik kaza tutanağı içeriyor." },
+    "WBOCRM": {
+      en:"An operational CRM for sales, support and admin roles. A React SPA → Node.js REST API → PostgreSQL vertical slice; JWT-based role authorisation, a lead-scoring algorithm and concurrent-edit conflict detection.",
+      tr:"Satış, destek ve yönetici rolleri için operasyonel CRM. React SPA → Node.js REST API → PostgreSQL dikey dilimi; JWT tabanlı rol yetkilendirme, aday puanlama algoritması ve eşzamanlı düzenleme çakışması tespiti." },
+    "subscription-tracker": {
+      en:"A full-stack app for tracking personal subscriptions. Node.js/Express and PostgreSQL backend with JWT-based per-user data isolation; subscription and payment-card management with a monthly spending summary.",
+      tr:"Kişisel abonelikleri takip eden full-stack uygulama. Node.js/Express ve PostgreSQL arka uç, JWT ile kullanıcı bazlı veri izolasyonu; abonelik ve ödeme kartı yönetimi, aylık harcama özeti." },
+    "student_info_system": {
+      en:"A student information system written in Java — managing student, course and grade records.",
+      tr:"Java ile yazılmış öğrenci bilgi sistemi — öğrenci, ders ve not kayıtlarının yönetimi." },
+    "flappy-dunk": {
+      en:"A basketball arcade game that runs in the browser. Gravity physics, a coin and shop system, six ball skins and progress saved with localStorage, using HTML5 Canvas and vanilla JavaScript.",
+      tr:"Tarayıcıda çalışan basketbol arcade oyunu. HTML5 Canvas ve vanilla JavaScript ile yerçekimi fiziği, coin ve mağaza sistemi, altı farklı top görünümü, localStorage ile ilerleme kaydı." },
+    "mobile-document-enhancement": {
+      en:"A Python pipeline that turns phone photos of documents into scan-quality images: perspective correction, noise reduction and sharpening, a comparison of Sauvola vs. adaptive thresholding, with results measured by MSE and PSNR.",
+      tr:"Telefonla çekilmiş belge fotoğraflarını tarama kalitesine çıkaran Python işlem hattı: perspektif düzeltme, gürültü azaltma ve keskinleştirme, Sauvola ile adaptif eşiklemenin karşılaştırılması; sonuçlar MSE ve PSNR ile ölçülüyor." },
+    "DCS_UDP": {
+      en:"A C++ client/server app demonstrating the Nagle (sender) and Clark (receiver) algorithms over UDP. Tackles the Silly Window Syndrome problem; network efficiency can be compared with the algorithms on and off.",
+      tr:"UDP üzerinde Nagle (gönderici) ve Clark (alıcı) algoritmalarını gösteren C++ istemci/sunucu uygulaması. Silly Window Syndrome problemini ele alıyor; algoritmalar açıkken ve kapalıyken ağ verimliliği karşılaştırılabiliyor." },
+    "Hotel-Reservation-System": {
+      en:"An object-oriented programming course final project. A console-based hotel reservation system in Java; normal/suite room types via inheritance and polymorphism, customer management and CSV data storage.",
+      tr:"Nesne yönelimli programlama dersi bitirme projesi. Java ile konsol tabanlı otel rezervasyon sistemi; kalıtım ve çok biçimlilik ile normal/suit oda tipleri, müşteri yönetimi ve CSV ile veri saklama." }
   },
 
   clubs: [
-    { name:"Arel Teknofest Kulübü", role:"Aktif üye", years:"",
-      desc:"Ulusal teknoloji yarışmalarına odaklanan atölye ve toplantılara katılıyorum." },
-    { name:"Arel Gömülü Sistemler Kulübü", role:"Üye", years:"",
-      desc:"IoT ve donanım-yazılım entegrasyonu üzerine seminerleri ve uygulamalı etkinlikleri takip ediyorum." },
-    { name:"Arel Yazılım Kulübü", role:"Üye", years:"",
-      desc:"Üniversite içindeki teknik buluşmalara ve yazılım geliştirme etkinliklerine katılıyorum." }
+    { name:"Arel Teknofest Club", role:{en:"Active member",tr:"Aktif üye"},
+      desc:{en:"I take part in workshops and meetings focused on national technology competitions.",
+            tr:"Ulusal teknoloji yarışmalarına odaklanan atölye ve toplantılara katılıyorum."} },
+    { name:"Arel Embedded Systems Club", role:{en:"Member",tr:"Üye"},
+      desc:{en:"I follow seminars and hands-on activities on IoT and hardware–software integration.",
+            tr:"IoT ve donanım-yazılım entegrasyonu üzerine seminerleri ve uygulamalı etkinlikleri takip ediyorum."} },
+    { name:"Arel Software Club", role:{en:"Member",tr:"Üye"},
+      desc:{en:"I attend technical meetups and software development events at the university.",
+            tr:"Üniversite içindeki teknik buluşmalara ve yazılım geliştirme etkinliklerine katılıyorum."} }
   ],
 
   education: [
-    { t:"Bilgisayar Mühendisliği, Lisans", org:"İstanbul Arel Üniversitesi",
-      d:"2023 — 2027 (beklenen)" }
+    { t:{en:"BSc Computer Engineering",tr:"Bilgisayar Mühendisliği, Lisans"}, org:"İstanbul Arel University",
+      d:{en:"2023 — 2027 (expected)",tr:"2023 — 2027 (beklenen)"} }
   ],
   experience: [
-    { t:"Yaz Stajı", org:"Anadolu Sigorta",
-      s:"HTML ile web tabanlı bir proje geliştirdim, şirket içi sistemleri inceledim ve çevik çalışma pratiklerini öğrendim.",
-      d:"Temmuz — Ağustos 2026 · İstanbul" },
-    { t:"Yaz Stajı", org:"Enocta",
-      s:"Excel'de veri düzenleme ve analiz, CRM sisteminde veri temizliği; satış ve iş geliştirme faaliyetlerine katkı.",
-      d:"Temmuz — Ağustos 2025 · İstanbul" }
+    { t:{en:"Summer Internship",tr:"Yaz Stajı"}, org:"Anadolu Sigorta",
+      s:{en:"Built a web-based project in HTML, studied internal company systems and learned agile working practices.",
+         tr:"HTML ile web tabanlı bir proje geliştirdim, şirket içi sistemleri inceledim ve çevik çalışma pratiklerini öğrendim."},
+      d:{en:"July — August 2026 · İstanbul",tr:"Temmuz — Ağustos 2026 · İstanbul"} },
+    { t:{en:"Summer Internship",tr:"Yaz Stajı"}, org:"Enocta",
+      s:{en:"Data organisation and analysis in Excel, data cleaning in a CRM system; contributed to sales and business development.",
+         tr:"Excel'de veri düzenleme ve analiz, CRM sisteminde veri temizliği; satış ve iş geliştirme faaliyetlerine katkı."},
+      d:{en:"July — August 2025 · İstanbul",tr:"Temmuz — Ağustos 2025 · İstanbul"} }
   ],
   skills:    ["Java","Python","C++","Go","JavaScript","SQL","PostgreSQL","OpenCV","NumPy","Flask","Node.js","React","Docker","Git"],
-  interests: ["Veritabanı Yönetim Sistemleri","Veri Yapıları","Algoritmalar","Nesne Yönelimli Programlama","Veri İletişimi ve Bilgisayar Ağları"],
-  languages: []
+  interests: {
+    en:["Database Management Systems","Data Structures","Algorithms","Object-Oriented Programming","Data Communications & Computer Networks"],
+    tr:["Veritabanı Yönetim Sistemleri","Veri Yapıları","Algoritmalar","Nesne Yönelimli Programlama","Veri İletişimi ve Bilgisayar Ağları"]
+  },
+  languages: {
+    en:["Turkish — native","English — B2"],
+    tr:["Türkçe — ana dil","İngilizce — B2"]
+  }
 };
 /* ========================================================================== */
 
@@ -570,10 +623,64 @@ scrollTo(0, 0);
 
 const $ = s => document.querySelector(s);
 const GH = "https://api.github.com";
-const MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
-const nf = new Intl.NumberFormat('tr-TR');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmtDate = d => new Date(d+"T00:00:00").toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+
+/* ============================== ÇEVİRİ ==============================
+   Varsayılan dil İngilizce. Sağ üstteki düğme diller arasında geçer. */
+const MONTHS_BY = {
+  en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  tr:["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"]
+};
+const T = {
+  en:{
+    "nav.about":"About","nav.activity":"Activity","nav.projects":"Projects","nav.clubs":"Clubs","nav.cv":"CV",
+    "btn.email":"Email",
+    "cal.title":"Commit calendar","cal.note":"live from GitHub · click a square","cal.loading":"Loading…",
+    "day.mon":"Mon","day.wed":"Wed","day.fri":"Fri",
+    "game.poke":"you might want to press it","game.start":"Play","game.finish":"Finish","game.title":"Snake",
+    "game.instr":"Use the arrow keys to start playing.","game.food":"Food: days I committed · Esc to exit",
+    "game.exitWall":"You went off the calendar.","game.exitSelf":"You ran into yourself.",
+    "game.won":"You collected them all","game.over":"Game over","game.retry":"Play again","game.close":"Close",
+    "proj.title":"Projects","proj.search":"Search…","proj.allLangs":"All languages","proj.none":"No matching projects.",
+    "sort.updated":"Recently updated","sort.stars":"Stars","sort.name":"A – Z","sort.created":"Newest",
+    "clubs.title":"Clubs & communities",
+    "cv.title":"Résumé","cv.education":"Education","cv.experience":"Experience","cv.tech":"Technologies",
+    "cv.courses":"Relevant coursework","cv.languages":"Languages","cv.note":"Full version in the PDF",
+    "stat.total":"total contributions","stat.active":"active days","stat.streak":"longest streak",
+    "stat.weekly":"weekly avg.","stat.busiest":"busiest","stat.busiestDay":"busiest day","stat.topMonth":"top month",
+    "err.rate":"GitHub's hourly request limit (60) is used up. Resets at %t.",
+    "err.net":"Couldn't load GitHub data. Check your connection and refresh."
+  },
+  tr:{
+    "nav.about":"Hakkımda","nav.activity":"Aktivite","nav.projects":"Projeler","nav.clubs":"Kulüpler","nav.cv":"CV",
+    "btn.email":"E-posta",
+    "cal.title":"Commit takvimi","cal.note":"GitHub'dan canlı · bir kareye tıkla","cal.loading":"Yükleniyor…",
+    "day.mon":"Pzt","day.wed":"Çar","day.fri":"Cum",
+    "game.poke":"basmak isteyebilirsin","game.start":"Başlat","game.finish":"Bitir","game.title":"Yılan",
+    "game.instr":"Ok tuşları ile oynamaya başlayabilirsiniz.","game.food":"Yem: commit attığım günler · çıkmak için Esc",
+    "game.exitWall":"Takvimin dışına çıktın.","game.exitSelf":"Kendine çarptın.",
+    "game.won":"Hepsini topladın","game.over":"Oyun bitti","game.retry":"Tekrar oyna","game.close":"Kapat",
+    "proj.title":"Projeler","proj.search":"Ara…","proj.allLangs":"Tüm diller","proj.none":"Eşleşen proje yok.",
+    "sort.updated":"Son güncellenen","sort.stars":"Yıldız","sort.name":"A – Z","sort.created":"En yeni",
+    "clubs.title":"Kulüpler ve topluluklar",
+    "cv.title":"Özgeçmiş","cv.education":"Eğitim","cv.experience":"Deneyim","cv.tech":"Teknolojiler",
+    "cv.courses":"İlgili dersler","cv.languages":"Diller","cv.note":"Tam sürüm PDF'te",
+    "stat.total":"toplam katkı","stat.active":"aktif gün","stat.streak":"en uzun seri",
+    "stat.weekly":"haftalık ort.","stat.busiest":"en yoğun","stat.busiestDay":"en yoğun gün","stat.topMonth":"en verimli ay",
+    "err.rate":"GitHub'ın saatlik istek limiti (60) dolmuş. %t'de sıfırlanıyor.",
+    "err.net":"GitHub verisi alınamadı. Bağlantını kontrol edip sayfayı yenile."
+  }
+};
+
+let lang = 'en';
+try{ const sv = localStorage.getItem('lang'); if(sv==='en'||sv==='tr') lang = sv; }catch(e){}
+
+const t  = k => (T[lang] && T[lang][k]) || k;
+const L  = v => (v && typeof v==='object' && !Array.isArray(v) && ('en' in v||'tr' in v)) ? (v[lang] ?? v.en ?? v.tr) : v;
+let MONTHS = MONTHS_BY[lang];
+let LOCALE = lang==='tr' ? 'tr-TR' : 'en-GB';
+let nf = new Intl.NumberFormat(LOCALE);
+let fmtDate = d => new Date(d+"T00:00:00").toLocaleDateString(LOCALE,{day:'numeric',month:'long',year:'numeric'});
 
 /* ---------- tema ---------- */
 try{ const s=localStorage.getItem('theme'); if(s) document.documentElement.dataset.theme=s; }catch(e){}
@@ -585,37 +692,66 @@ $('#themeBtn').onclick = () => {
   try{ localStorage.setItem('theme', next) }catch(e){}
 };
 
-/* ---------- statik içerik ---------- */
-document.title = CONFIG.name;
-$('#hName').textContent = CONFIG.name;
-$('#hRole').textContent = CONFIG.role;
-$('#hAbout').innerHTML = CONFIG.about.map(p=>`<p>${esc(p)}</p>`).join('');
+/* ---------- dile bağlı içerik ---------- */
 $('#cvBtn').href = CONFIG.cv;
 $('#ghBtn').href = `https://github.com/${CONFIG.github}`;
 $('#mailBtn').href = `mailto:${CONFIG.email}`;
 if(CONFIG.linkedin) $('#liBtn').href = CONFIG.linkedin; else $('#liBtn').remove();
-$('#footL').textContent = `© ${new Date().getFullYear()} ${CONFIG.name}`;
 $('#picFb').textContent = CONFIG.name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 
-$('#clubs').innerHTML = CONFIG.clubs.map(c=>`
-  <div class="club">
-    <div class="cn">${esc(c.name)}</div>
-    <div class="cr">${esc(c.role||'')}</div>
-    <div class="cy">${esc(c.years||'')}</div>
-    ${c.desc?`<div class="cd">${esc(c.desc)}</div>`:''}
-  </div>`).join('');
-
 const tlHtml = a => a.map(i=>`<div class="ti">
-  <div class="t">${esc(i.t)}</div>
+  <div class="t">${esc(L(i.t))}</div>
   ${i.org ? `<div class="o">${esc(i.org)}</div>` : ''}
-  ${i.s   ? `<div class="s">${esc(i.s)}</div>`   : ''}
-  <div class="d">${esc(i.d)}</div>
+  ${i.s   ? `<div class="s">${esc(L(i.s))}</div>`   : ''}
+  <div class="d">${esc(L(i.d))}</div>
 </div>`).join('');
-$('#cvEdu').innerHTML = tlHtml(CONFIG.education);
-$('#cvExp').innerHTML = tlHtml(CONFIG.experience);
 const chips = a => a.map(x=>`<span class="chip">${esc(x)}</span>`).join('');
-$('#cvSkills').innerHTML    = chips(CONFIG.skills);
-$('#cvInterests').innerHTML = chips(CONFIG.interests);
+
+function renderProfile(){
+  document.title = CONFIG.name;
+  $('#hName').textContent = CONFIG.name;
+  $('#hRole').textContent = L(CONFIG.role);
+  $('#hAbout').innerHTML = L(CONFIG.about).map(x=>`<p>${esc(x)}</p>`).join('');
+  $('#footL').textContent = `© ${new Date().getFullYear()} ${CONFIG.name}`;
+}
+function renderClubs(){
+  $('#clubs').innerHTML = CONFIG.clubs.map(c=>`
+    <div class="club">
+      <div class="cn">${esc(c.name)}</div>
+      <div class="cr">${esc(L(c.role)||'')}</div>
+      ${c.years?`<div class="cy">${esc(c.years)}</div>`:''}
+      ${c.desc?`<div class="cd">${esc(L(c.desc))}</div>`:''}
+    </div>`).join('');
+}
+function renderCV(){
+  $('#cvEdu').innerHTML = tlHtml(CONFIG.education);
+  $('#cvExp').innerHTML = tlHtml(CONFIG.experience);
+  $('#cvSkills').innerHTML    = chips(CONFIG.skills);
+  $('#cvInterests').innerHTML = chips(L(CONFIG.interests));
+  $('#cvLangs').innerHTML     = chips(L(CONFIG.languages));
+}
+
+/* metni dile göre uygula ve her şeyi yeniden çiz */
+function applyLang(next){
+  if(next){ lang = next; try{ localStorage.setItem('lang', lang) }catch(e){} }
+  document.documentElement.lang = lang;
+  MONTHS = MONTHS_BY[lang];
+  LOCALE = lang==='tr' ? 'tr-TR' : 'en-GB';
+  nf = new Intl.NumberFormat(LOCALE);
+  fmtDate = d => new Date(d+"T00:00:00").toLocaleDateString(LOCALE,{day:'numeric',month:'long',year:'numeric'});
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.dataset.i18nPh); });
+  $('#langBtn').textContent = lang.toUpperCase();
+
+  renderProfile(); renderClubs(); renderCV();
+  if(typeof renderFacts==='function') renderFacts();
+  if(typeof rebuildCalendar==='function') rebuildCalendar();
+  if(typeof REPOS!=='undefined' && REPOS.length){ buildLangFilter(); render(); }
+  if(typeof S!=='undefined' && !S.running && !S.armed) $('#playLbl').textContent = t('game.start');
+}
+
+$('#langBtn').onclick = ()=> applyLang(lang==='en' ? 'tr' : 'en');
 
 function setPhoto(src){
   const img = new Image();
@@ -672,23 +808,28 @@ async function limitNote(){
     const d = await r.json();
     const c = d.resources.core;
     if(c.remaining === 0){
-      const t = new Date(c.reset*1000).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
-      return `GitHub'ın saatlik istek limiti (60) dolmuş. ${t}'de sıfırlanıyor.`;
+      const rt = new Date(c.reset*1000).toLocaleTimeString(LOCALE,{hour:'2-digit',minute:'2-digit'});
+      return t('err.rate').replace('%t', rt);
     }
   }catch(e){}
-  return 'GitHub verisi alınamadı. Bağlantını kontrol edip sayfayı yenile.';
+  return t('err.net');
 }
 
+let USER = null;
+function renderFacts(){
+  const u = USER; if(!u){ $('#facts').textContent=''; return; }
+  const yr = new Date(u.created_at).getFullYear();
+  const bits = [];
+  if(u.location) bits.push(u.location);
+  bits.push(lang==='tr' ? `${u.public_repos} depo` : `${u.public_repos} repos`);
+  if(u.followers) bits.push(lang==='tr' ? `${nf.format(u.followers)} takipçi` : `${nf.format(u.followers)} followers`);
+  bits.push(lang==='tr' ? `${yr}'ten beri GitHub'da` : `on GitHub since ${yr}`);
+  $('#facts').innerHTML = bits.map(b=>`<span>${esc(b)}</span>`).join('');
+}
 async function loadProfile(){
-  try{
-    const u = await api(`${GH}/users/${CONFIG.github}`, 'user');
-    const bits = [];
-    if(u.location) bits.push(u.location);
-    bits.push(`${u.public_repos} depo`);
-    if(u.followers) bits.push(`${nf.format(u.followers)} takipçi`);
-    bits.push(`${new Date(u.created_at).getFullYear()}'ten beri GitHub'da`);
-    $('#facts').innerHTML = bits.map(b=>`<span>${esc(b)}</span>`).join('');
-  }catch(e){ $('#facts').textContent=''; }
+  try{ USER = await api(`${GH}/users/${CONFIG.github}`, 'user'); }
+  catch(e){ USER = null; }
+  renderFacts();
 }
 
 /* ============================================================================
@@ -729,7 +870,10 @@ async function fetchFromEvents(){
 
 const levelOf = (n,max) => !n ? 0 : n >= max*.75 ? 4 : n >= max*.45 ? 3 : n >= max*.2 ? 2 : 1;
 
+let lastCal = null;
+function rebuildCalendar(){ if(lastCal) buildCalendar(lastCal.map, lastCal.year, lastCal.source); }
 function buildCalendar(map, year, source){
+  lastCal = {map, year, source};
   exitGame(true);
   const grid = $('#grid');
   [...grid.querySelectorAll('.cell')].forEach(c=>c.remove());
@@ -782,14 +926,17 @@ function buildCalendar(map, year, source){
   monthAt.forEach(({col,m})=>{ if(!seen.has(m)){ seen.add(m); labels[col]=MONTHS[m]; } });
   months.innerHTML = labels.map(t=>`<span>${t}</span>`).join('');
 
-  $('#calTotal').innerHTML = `<b>${nf.format(total)}</b> katkı · ${year}`;
+  const contribWord = lang==='tr' ? 'katkı' : 'contributions';
+  $('#calTotal').innerHTML = `<b>${nf.format(total)}</b> ${contribWord} · ${year}`;
+  const busyShort = best.d ? new Date(best.d).toLocaleDateString(LOCALE,{day:'numeric',month:'short'}) : '';
+  const topMonth = MONTHS[byMonth.indexOf(Math.max(...byMonth))];
   $('#stats').innerHTML = `
-    <div class="stat"><div class="v">${nf.format(total)}</div><div class="k">toplam katkı</div></div>
-    <div class="stat"><div class="v">${active}</div><div class="k">aktif gün</div></div>
-    <div class="stat"><div class="v">${bestStreak}</div><div class="k">en uzun seri</div></div>
-    <div class="stat"><div class="v">${(total/(cols||1)).toFixed(1)}</div><div class="k">haftalık ort.</div></div>
-    <div class="stat"><div class="v">${best.n}</div><div class="k">${best.d?'en yoğun · '+new Date(best.d).toLocaleDateString('tr-TR',{day:'numeric',month:'short'}):'en yoğun gün'}</div></div>
-    <div class="stat"><div class="v">${nf.format(Math.max(...byMonth))}</div><div class="k">en verimli ay · ${MONTHS[byMonth.indexOf(Math.max(...byMonth))]}</div></div>`;
+    <div class="stat"><div class="v">${nf.format(total)}</div><div class="k">${t('stat.total')}</div></div>
+    <div class="stat"><div class="v">${active}</div><div class="k">${t('stat.active')}</div></div>
+    <div class="stat"><div class="v">${bestStreak}</div><div class="k">${t('stat.streak')}</div></div>
+    <div class="stat"><div class="v">${(total/(cols||1)).toFixed(1)}</div><div class="k">${t('stat.weekly')}</div></div>
+    <div class="stat"><div class="v">${best.n}</div><div class="k">${best.d? t('stat.busiest')+' · '+busyShort : t('stat.busiestDay')}</div></div>
+    <div class="stat"><div class="v">${nf.format(Math.max(...byMonth))}</div><div class="k">${t('stat.topMonth')} · ${topMonth}</div></div>`;
 
   wireCells();
   prepareGame();
@@ -833,7 +980,7 @@ function buildYears(){
 }
 
 async function loadCalendar(year){
-  $('#calTotal').textContent='Yükleniyor…';
+  $('#calTotal').textContent=t('cal.loading');
   $('#dayDetail').classList.remove('show');
   try{
     const {map,source} = await fetchContribApi(year);
@@ -842,7 +989,7 @@ async function loadCalendar(year){
   }catch(e){
     try{ const {map,source} = await fetchFromEvents(); buildCalendar(map, year, source); }
     catch(e2){
-      $('#calTotal').textContent='Aktivite verisi alınamadı';
+      $('#calTotal').textContent=t('cal.loading');
       $('#stats').innerHTML = `<div class="stat" style="grid-column:1/-1"><div class="k">${esc(await limitNote())}</div></div>`;
     }
   }
@@ -885,8 +1032,8 @@ const KEYPAD = `<div class="keys"><i>↑</i><u>←</u><u>↓</u><u>→</u></div>
 function askStart(){
   veil(`<div class="box">
       ${KEYPAD}
-      <div class="bs">Ok tuşları ile oynamaya başlayabilirsiniz.<br>
-        <span class="q">Yem: <b>commit attığım günler</b> · çıkmak için Esc</span></div>
+      <div class="bs">${t('game.instr')}<br>
+        <span class="q">${t('game.food')}</span></div>
     </div>`);
   S.armed = true;
 }
@@ -900,7 +1047,7 @@ function startGame(){
   $('#tip').classList.remove('show');
   $('#dayDetail').classList.remove('show');
   $('#grid').querySelectorAll('.cell.sel').forEach(c=>c.classList.remove('sel'));
-  $('#playLbl').textContent = 'Bitir';
+  $('#playLbl').textContent = t('game.finish');
 
   const c0 = Math.floor(S.cols/2), r0 = 3;
   S.snake = [{c:c0, r:r0}, {c:c0-1, r:r0}];   // 2 kare, sağa bakıyor
@@ -927,11 +1074,11 @@ function step(){
   // takvimin dışı duvar: kenardan çıkmak da, takvimde yeri olmayan kareler de ölüm
   const cell = cellAt(c, r);
   if(c < 0 || c >= S.cols || r < 0 || r > 6 || !cell || cell.classList.contains('empty')){
-    gameOver(false, 'Takvimin dışına çıktın.'); return;
+    gameOver(false, t('game.exitWall')); return;
   }
   // kuyruk bu adımda çekileceği için son segmenti çarpışma dışı bırak
   if(S.snake.some((s,i)=> i < S.snake.length-1 && s.c===c && s.r===r)){
-    gameOver(false, 'Kendine çarptın.'); return;
+    gameOver(false, t('game.exitSelf')); return;
   }
 
   S.snake.unshift({c, r});
@@ -978,19 +1125,22 @@ function centerOnHead(){
 }
 
 function updateScore(){
-  $('#gScore').innerHTML =
-    `<b>${nf.format(S.score)}</b> katkı · ${S.ate} gün · boy ${S.snake.length}`;
+  const u = lang==='tr'
+    ? `<b>${nf.format(S.score)}</b> katkı · ${S.ate} gün · boy ${S.snake.length}`
+    : `<b>${nf.format(S.score)}</b> pts · ${S.ate} days · len ${S.snake.length}`;
+  $('#gScore').innerHTML = u;
 }
 
 function gameOver(won, why){
   S.running = false; clearTimeout(S.timer);
   veil(`<div class="box">
-      <div class="bt">${won ? 'Hepsini topladın' : 'Oyun bitti'}</div>
-      <div class="bs">${why ? esc(why)+' ' : ''}<b>${nf.format(S.score)}</b> katkı ·
-        ${S.ate} gün · boy ${S.snake.length}</div>
+      <div class="bt">${won ? t('game.won') : t('game.over')}</div>
+      <div class="bs">${why ? esc(why)+' ' : ''}${lang==='tr'
+        ? `<b>${nf.format(S.score)}</b> katkı · ${S.ate} gün · boy ${S.snake.length}`
+        : `<b>${nf.format(S.score)}</b> pts · ${S.ate} days · len ${S.snake.length}`}</div>
       <div class="row">
-        <button class="gbtn mini" id="againBtn">Tekrar oyna</button>
-        <button class="gbtn mini" id="closeBtn">Kapat</button>
+        <button class="gbtn mini" id="againBtn">${t('game.retry')}</button>
+        <button class="gbtn mini" id="closeBtn">${t('game.close')}</button>
       </div>
     </div>`);
   $('#againBtn').onclick = startGame;
@@ -1003,7 +1153,7 @@ function exitGame(silent){
   unveil();
   $('#calZone').classList.remove('play');
   document.documentElement.classList.remove('playing');
-  $('#playLbl').textContent = 'Başlat';
+  $('#playLbl').textContent = t('game.start');
   $('#grid').querySelectorAll('.cell.eaten').forEach(c=>{
     c.classList.remove('eaten','hit');
     if(+c.dataset.lv) c.classList.add('l'+c.dataset.lv);
@@ -1090,7 +1240,7 @@ async function loadLanguages(){
 function buildLangFilter(){
   const sel = $('#langFilter'), cur = sel.value;
   const all = [...new Set(REPOS.flatMap(langsOf))].sort((a,b)=>a.localeCompare(b,'tr'));
-  sel.innerHTML = `<option value="">Tüm diller</option>` +
+  sel.innerHTML = `<option value="">${t('proj.allLangs')}</option>` +
     all.map(l=>`<option value="${esc(l)}">${esc(l)}</option>`).join('');
   sel.value = cur;
 }
@@ -1098,9 +1248,9 @@ function buildLangFilter(){
 function descOf(r){
   if(r.description && r.description.trim()) return r.description.trim();
   const d = CONFIG.descriptions || {};
-  if(d[r.name]) return d[r.name];
+  if(d[r.name]) return L(d[r.name]);
   const k = Object.keys(d).find(k=>k.toLowerCase()===r.name.toLowerCase());
-  return k ? d[k] : '';
+  return k ? L(d[k]) : '';
 }
 const pinRank = r => {
   const i = CONFIG.pinned.findIndex(p=>p.toLowerCase()===r.name.toLowerCase());
@@ -1112,7 +1262,7 @@ async function loadRepos(){
     const all = await api(`${GH}/users/${CONFIG.github}/repos?per_page=100&sort=updated`, 'repos');
     REPOS = all.filter(x =>
       !x.fork && !CONFIG.hideRepos.some(h=>h.toLowerCase()===x.name.toLowerCase()));
-    $('#projCount').textContent = `${REPOS.length} depo`;
+    $('#projCount').textContent = lang==='tr' ? `${REPOS.length} depo` : `${REPOS.length} repos`;
     buildLangFilter();
     render();
     loadLanguages();          // dil dağılımları gelince liste kendini tazeler
@@ -1138,7 +1288,7 @@ function render(){
     return new Date(b.pushed_at)-new Date(a.pushed_at);
   });
 
-  if(!list.length){ $('#projects').innerHTML = `<div class="note">Eşleşen proje yok.</div>`; return; }
+  if(!list.length){ $('#projects').innerHTML = `<div class="note">${t('proj.none')}</div>`; return; }
 
   $('#projects').innerHTML = list.map(r=>{
     const langHtml = langsOf(r).map(l =>
@@ -1158,7 +1308,7 @@ function render(){
         ${langHtml ? `<span class="plangs">${langHtml}</span>` : ''}
         <span class="pstat">
           ${r.stargazers_count ? `<span>★ ${r.stargazers_count}</span>` : ''}
-          <time>${new Date(r.pushed_at).toLocaleDateString('tr-TR',{month:'short',year:'numeric'})}</time>
+          <time>${new Date(r.pushed_at).toLocaleDateString(LOCALE,{month:'short',year:'numeric'})}</time>
         </span>
       </div>
     </a>`;
@@ -1206,6 +1356,7 @@ const io = new IntersectionObserver(es=>{
 secs.forEach(s=>io.observe(s));
 
 /* ---------- başlat ---------- */
+applyLang();          // statik metin + profil/kulüp/CV'yi seçili dilde çiz
 buildYears();
 loadProfile();
 loadCalendar(selectedYear);
