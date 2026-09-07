@@ -379,10 +379,10 @@ footer a{color:var(--dim)}
 <nav>
   <div class="wrap">
     <a class="nl" href="#hakkimda" data-i18n="nav.about">About</a>
+    <a class="nl" href="#cv" data-i18n="nav.cv">CV</a>
     <a class="nl" href="#aktivite" data-i18n="nav.activity">Activity</a>
     <a class="nl" href="#projeler" data-i18n="nav.projects">Projects</a>
     <a class="nl" href="#kulupler" data-i18n="nav.clubs">Clubs</a>
-    <a class="nl" href="#cv" data-i18n="nav.cv">CV</a>
     <button class="langbtn" id="langBtn" aria-label="Language">EN</button>
     <button class="tbtn" id="themeBtn" aria-label="Theme">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -420,6 +420,10 @@ footer a{color:var(--dim)}
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.5 8.65 21 11.1 21 14.3V21h-4v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.56-2.3 3.17V21H9z"/></svg>
           LinkedIn
         </a>
+        <a class="btn" id="siteBtn" href="#" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+          borsadostu.com
+        </a>
         <a class="btn" id="mailBtn" href="#">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
           <span data-i18n="btn.email">Email</span>
@@ -428,6 +432,28 @@ footer a{color:var(--dim)}
     </div>
   </div>
 </header>
+
+<section id="cv">
+  <div class="shead">
+    <h2 data-i18n="cv.title">Résumé</h2>
+  </div>
+  <div class="two">
+    <div>
+      <h4 data-i18n="cv.education">Education</h4>
+      <div class="tl" id="cvEdu"></div>
+      <h4 style="margin-top:28px" data-i18n="cv.experience">Experience</h4>
+      <div class="tl" id="cvExp"></div>
+    </div>
+    <div>
+      <h4 data-i18n="cv.tech">Technologies</h4>
+      <div class="chips" id="cvSkills"></div>
+      <h4 style="margin-top:26px" data-i18n="cv.courses">Relevant coursework</h4>
+      <div class="chips" id="cvInterests"></div>
+      <h4 style="margin-top:26px" data-i18n="cv.languages">Languages</h4>
+      <div class="chips" id="cvLangs"></div>
+    </div>
+  </div>
+</section>
 
 <!-- ===== AKTİVİTE ===== -->
 <section id="aktivite">
@@ -509,27 +535,6 @@ footer a{color:var(--dim)}
 </section>
 
 <!-- ===== CV ===== -->
-<section id="cv">
-  <div class="shead">
-    <h2 data-i18n="cv.title">Résumé</h2>
-  </div>
-  <div class="two">
-    <div>
-      <h4 data-i18n="cv.education">Education</h4>
-      <div class="tl" id="cvEdu"></div>
-      <h4 style="margin-top:28px" data-i18n="cv.experience">Experience</h4>
-      <div class="tl" id="cvExp"></div>
-    </div>
-    <div>
-      <h4 data-i18n="cv.tech">Technologies</h4>
-      <div class="chips" id="cvSkills"></div>
-      <h4 style="margin-top:26px" data-i18n="cv.courses">Relevant coursework</h4>
-      <div class="chips" id="cvInterests"></div>
-      <h4 style="margin-top:26px" data-i18n="cv.languages">Languages</h4>
-      <div class="chips" id="cvLangs"></div>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div id="footL"></div>
@@ -561,6 +566,7 @@ const CONFIG = {
   role:   { en:"Computer Engineering · Backend & Data", tr:"Bilgisayar Mühendisliği · Backend & Veri" },
   email:  "berkegemenoguz@hotmail.com",
   linkedin: "https://www.linkedin.com/in/berkegeoguz",
+  website:  "https://borsadostu.com",
   photo:  "",
   cv:     "cv.pdf",
 
@@ -792,6 +798,7 @@ $('#cvBtn').href = CONFIG.cv;
 $('#ghBtn').href = `https://github.com/${CONFIG.github}`;
 $('#mailBtn').href = `mailto:${CONFIG.email}`;
 if(CONFIG.linkedin) $('#liBtn').href = CONFIG.linkedin; else $('#liBtn').remove();
+if(CONFIG.website) $('#siteBtn').href = CONFIG.website; else $('#siteBtn').remove();
 $('#picFb').textContent = CONFIG.name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 
 const tlHtml = (a, kind) => a.map((i,idx)=>{
