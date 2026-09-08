@@ -336,6 +336,20 @@ select{border:1px solid var(--line); background:var(--panel); color:var(--text);
       border-radius:6px; font-size:14.5px;
       font-family:'Newsreader',Georgia,serif}
 
+/* tech stack */
+.tcat{margin-bottom:22px}
+.tcat:last-child{margin-bottom:0}
+.tcat h4{margin-bottom:11px}
+.tchips{display:flex; flex-wrap:wrap; gap:8px}
+.tchip{display:inline-flex; align-items:center; gap:8px;
+       padding:7px 13px 7px 11px; border-radius:8px; font-size:13.5px; font-weight:500;
+       color:var(--text); background:color-mix(in srgb, var(--b) 10%, var(--panel));
+       border:1px solid color-mix(in srgb, var(--b) 34%, var(--line));
+       transition:transform .12s, background .15s}
+.tchip:hover{transform:translateY(-2px); background:color-mix(in srgb, var(--b) 16%, var(--panel))}
+.tchip i{width:9px; height:9px; border-radius:50%; background:var(--b);
+         box-shadow:0 0 0 3px color-mix(in srgb, var(--b) 22%, transparent)}
+
 .clubs{display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
        background:var(--bg); border:1px solid var(--line-soft);
        border-radius:var(--r); overflow:hidden}
@@ -380,6 +394,7 @@ footer a{color:var(--dim)}
   <div class="wrap">
     <a class="nl" href="#hakkimda" data-i18n="nav.about">About</a>
     <a class="nl" href="#cv" data-i18n="nav.cv">CV</a>
+    <a class="nl" href="#stack" data-i18n="nav.stack">Stack</a>
     <a class="nl" href="#aktivite" data-i18n="nav.activity">Activity</a>
     <a class="nl" href="#projeler" data-i18n="nav.projects">Projects</a>
     <a class="nl" href="#kulupler" data-i18n="nav.clubs">Clubs</a>
@@ -445,14 +460,20 @@ footer a{color:var(--dim)}
       <div class="tl" id="cvExp"></div>
     </div>
     <div>
-      <h4 data-i18n="cv.tech">Technologies</h4>
-      <div class="chips" id="cvSkills"></div>
-      <h4 style="margin-top:26px" data-i18n="cv.courses">Relevant coursework</h4>
+      <h4 data-i18n="cv.courses">Relevant coursework</h4>
       <div class="chips" id="cvInterests"></div>
       <h4 style="margin-top:26px" data-i18n="cv.languages">Languages</h4>
       <div class="chips" id="cvLangs"></div>
     </div>
   </div>
+</section>
+
+<!-- ===== TECH STACK ===== -->
+<section id="stack">
+  <div class="shead">
+    <h2 data-i18n="stack.title">Tech stack</h2>
+  </div>
+  <div id="stackBody"></div>
 </section>
 
 <!-- ===== AKTİVİTE ===== -->
@@ -698,6 +719,29 @@ const CONFIG = {
       } }
   ],
   skills:    ["Java","Python","C++","Go","JavaScript","SQL","PostgreSQL","OpenCV","NumPy","Flask","Node.js","React","Docker","Git"],
+
+  /* Tech stack — her öğe [ad, marka rengi]. Kategori adları iki dilli.
+     Eklemek/çıkarmak: ilgili kategorinin items dizisine [ "Ad", "#renk" ] ekle. */
+  techStack: [
+    { cat:{en:"Languages",tr:"Diller"}, items:[
+      ["Java","#e76f00"],["Python","#3776ab"],["Go","#00add8"],["JavaScript","#c9a800"]
+    ]},
+    { cat:{en:"Frontend",tr:"Ön uç"}, items:[
+      ["React","#0aa5c9"],["HTML5","#e34f26"],["CSS3","#1572b6"]
+    ]},
+    { cat:{en:"Backend",tr:"Arka uç"}, items:[
+      ["Node.js","#339933"],["Flask","#5b5b5b"],["REST API","#a24e2b"]
+    ]},
+    { cat:{en:"Data & ML",tr:"Veri & ML"}, items:[
+      ["NumPy","#4d77cf"],["OpenCV","#5c3ee8"]
+    ]},
+    { cat:{en:"Databases",tr:"Veritabanı"}, items:[
+      ["PostgreSQL","#4169e1"]
+    ]},
+    { cat:{en:"DevOps & Tools",tr:"Araçlar"}, items:[
+      ["Docker","#2496ed"],["Git","#f05032"],["GitHub","#8b7f74"],["Prometheus","#e6522c"],["Postman","#ff6c37"]
+    ]}
+  ],
   interests: {
     en:["Database Management Systems","Data Structures","Algorithms","Object-Oriented Programming","Data Communications & Computer Networks"],
     tr:["Veritabanı Yönetim Sistemleri","Veri Yapıları","Algoritmalar","Nesne Yönelimli Programlama","Veri İletişimi ve Bilgisayar Ağları"]
@@ -732,7 +776,7 @@ const MONTHS_BY = {
 };
 const T = {
   en:{
-    "nav.about":"About","nav.activity":"Activity","nav.projects":"Projects","nav.clubs":"Clubs","nav.cv":"CV",
+    "nav.about":"About","nav.activity":"Activity","nav.projects":"Projects","nav.clubs":"Clubs","nav.cv":"CV","nav.stack":"Stack","stack.title":"Tech stack",
     "btn.email":"Email",
     "cal.title":"Commit calendar","cal.note":"live from GitHub · click a square","cal.loading":"Loading…",
     "day.mon":"Mon","day.wed":"Wed","day.fri":"Fri",
@@ -752,7 +796,7 @@ const T = {
     "err.net":"Couldn't load GitHub data. Check your connection and refresh."
   },
   tr:{
-    "nav.about":"Hakkımda","nav.activity":"Aktivite","nav.projects":"Projeler","nav.clubs":"Kulüpler","nav.cv":"CV",
+    "nav.about":"Hakkımda","nav.activity":"Aktivite","nav.projects":"Projeler","nav.clubs":"Kulüpler","nav.cv":"CV","nav.stack":"Yığın","stack.title":"Teknoloji yığını",
     "btn.email":"E-posta",
     "cal.title":"Commit takvimi","cal.note":"GitHub'dan canlı · bir kareye tıkla","cal.loading":"Yükleniyor…",
     "day.mon":"Pzt","day.wed":"Çar","day.fri":"Cum",
@@ -835,9 +879,17 @@ function renderCV(){
     el.addEventListener('click', open);
     el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
   });
-  $('#cvSkills').innerHTML    = chips(CONFIG.skills);
   $('#cvInterests').innerHTML = chips(L(CONFIG.interests));
   $('#cvLangs').innerHTML     = chips(L(CONFIG.languages));
+}
+function renderStack(){
+  $('#stackBody').innerHTML = (CONFIG.techStack||[]).map(g=>`
+    <div class="tcat">
+      <h4>${esc(L(g.cat))}</h4>
+      <div class="tchips">
+        ${g.items.map(([name,color])=>`<span class="tchip" style="--b:${esc(color)}"><i></i>${esc(name)}</span>`).join('')}
+      </div>
+    </div>`).join('');
 }
 
 /* metni dile göre uygula ve her şeyi yeniden çiz */
@@ -853,7 +905,7 @@ function applyLang(next){
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.dataset.i18nPh); });
   $('#langBtn').textContent = lang.toUpperCase();
 
-  renderProfile(); renderClubs(); renderCV();
+  renderProfile(); renderClubs(); renderCV(); renderStack();
   if(typeof renderFacts==='function') renderFacts();
   if(typeof rebuildCalendar==='function') rebuildCalendar();
   if(typeof REPOS!=='undefined' && REPOS.length){ renderProjCount(); buildLangFilter(); render(); }
