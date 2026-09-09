@@ -266,11 +266,20 @@ html.playing .poke{display:none}
        background:var(--panel); border:1px solid var(--line); border-radius:14px;
        padding:26px 28px 24px; box-shadow:0 20px 60px rgba(0,0,0,.3); animation:mrise .42s cubic-bezier(.22,.61,.36,1)}
 @keyframes mrise{from{transform:translateY(16px) scale(.97); opacity:0}to{transform:translateY(0) scale(1); opacity:1}}
+.modal-actions{position:absolute; top:14px; right:14px; display:flex; gap:8px; z-index:2}
+.modal-actions .modal-x{position:static}
+.modal-desc{color:var(--dim); font-size:14px; line-height:1.6; margin-top:14px}
+.modal-list + .modal-foot, .modal-desc + .modal-foot{margin-top:16px}
+.modal-foot{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+.modal-foot a{display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+       font-size:12.5px; font-weight:500; padding:7px 13px; border-radius:7px;
+       border:1px solid var(--line); background:var(--panel-2); color:var(--text); transition:.15s}
+.modal-foot a:hover{border-color:var(--accent); color:var(--accent)}
 .modal-x{position:absolute; top:14px; right:14px; width:30px; height:30px;
        display:grid; place-items:center; background:none; border:1px solid var(--line);
        border-radius:7px; color:var(--dim); cursor:pointer; transition:.15s}
 .modal-x:hover{color:var(--text); border-color:var(--accent)}
-.modal-title{font-family:'Newsreader',Georgia,serif; font-size:22px; letter-spacing:-.01em; padding-right:34px}
+.modal-title{font-family:'Newsreader',Georgia,serif; font-size:22px; letter-spacing:-.01em; padding-right:76px}
 .modal-sub{color:var(--accent); font-size:14px; margin-top:2px}
 .modal-date{color:var(--faint); font-size:12.5px; margin-top:3px;
        font-family:'Newsreader',Georgia,serif; font-style:italic}
@@ -575,6 +584,24 @@ footer a{color:var(--dim)}
   </div>
 </div>
 
+<div class="modal" id="projModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pjTitle">
+    <div class="modal-actions">
+      <a class="modal-x" id="pjLink" href="#" target="_blank" rel="noopener" aria-label="Open link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+      <button class="modal-x" id="pjClose" aria-label="Kapat / Close">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-title" id="pjTitle"></div>
+    <div class="modal-sub" id="pjSub"></div>
+    <div class="modal-desc" id="pjDesc"></div>
+    <ul class="modal-list" id="pjList"></ul>
+    <div class="modal-foot" id="pjLinks"></div>
+  </div>
+</div>
+
 <div id="tip"></div>
 
 <script>
@@ -645,6 +672,48 @@ const CONFIG = {
     "Hotel-Reservation-System": {
       en:"An object-oriented programming course final project. A console-based hotel reservation system in Java; normal/suite room types via inheritance and polymorphism, customer management and CSV data storage.",
       tr:"Nesne yönelimli programlama dersi bitirme projesi. Java ile konsol tabanlı otel rezervasyon sistemi; kalıtım ve çok biçimlilik ile normal/suit oda tipleri, müşteri yönetimi ve CSV ile veri saklama." }
+  },
+
+  /* Yayında olan projelerin canlı adresi (repo adına göre). Yoksa buton GitHub'a gider. */
+  live: {
+    "borsadostu": "https://borsadostu.com",
+    "go-trkit":   "https://pkg.go.dev/github.com/berkegemenoguz/go-trkit"
+  },
+
+  /* Pop-up'ta gösterilecek öne çıkan özellikler (repo adına göre, iki dilli). İsteğe bağlı. */
+  highlights: {
+    "ege-balancer": {
+      en:["Round-robin, least-connections and weighted balancing strategies, selectable from config.",
+          "Active and passive health checks that drop unhealthy backends automatically.",
+          "Structured JSON logs, a Prometheus /metrics endpoint, graceful shutdown and SIGHUP config reload."],
+      tr:["Yapılandırmadan seçilebilen round-robin, en az bağlantı ve ağırlıklı dengeleme stratejileri.",
+          "Sağlıksız sunucuları otomatik devre dışı bırakan aktif ve pasif sağlık kontrolleri.",
+          "Yapısal JSON loglar, Prometheus /metrics ucu, zarif kapanış ve SIGHUP ile config yenileme."]
+    },
+    "TOROS": {
+      en:["API-first Flask + PostgreSQL backend; two frontends (vanilla JS and a React/Vite SPA) share one /api contract.",
+          "Distributes deliveries to days by region and deadline with greedy bin-packing.",
+          "Assigns deliveries to vehicles and solves stop order with TSP; optional live-traffic routing."],
+      tr:["API öncelikli Flask + PostgreSQL arka uç; iki arayüz (vanilla JS ve React/Vite SPA) tek /api sözleşmesini paylaşır.",
+          "Teslimatları bölge ve termine göre günlere dağıtır (greedy bin-packing).",
+          "Teslimatları araçlara paylaştırır, durak sırasını TSP ile çözer; opsiyonel canlı trafik yönlendirmesi."]
+    },
+    "borsadostu": {
+      en:["Fetches market data and charts price history with technical indicators.",
+          "Built for students and small investors — a simple, focused interface.",
+          "Python backend with Plotly and Matplotlib visualisations."],
+      tr:["Piyasa verisini çekip fiyat geçmişini teknik göstergelerle grafikler.",
+          "Öğrenciler ve küçük yatırımcılar için — sade, odaklı bir arayüz.",
+          "Plotly ve Matplotlib görselleştirmeleriyle Python arka uç."]
+    },
+    "go-trkit": {
+      en:["Validates TCKN/VKN, Turkish IBANs (mod-97), licence plates and phone numbers.",
+          "Turkish-aware text: correct İ/ı casing and slugify, where the standard library gets it wrong.",
+          "Zero dependencies beyond the standard library; tested and documented on pkg.go.dev."],
+      tr:["TCKN/VKN, Türk IBAN'ı (mod-97), plaka ve telefon numaralarını doğrular.",
+          "Türkçe'ye duyarlı metin: standart kütüphanenin yanlış yaptığı İ/ı büyük-küçük harf ve slugify.",
+          "Standart kütüphane dışında sıfır bağımlılık; test edilmiş ve pkg.go.dev'de belgeli."]
+    }
   },
 
   clubs: [
@@ -789,7 +858,7 @@ const T = {
     "game.won":"You collected them all","game.over":"Game over","game.retry":"Play again","game.close":"Close",
     "proj.title":"Projects","proj.search":"Search…","proj.allLangs":"All languages","proj.none":"No matching projects.",
     "sort.updated":"Recently updated","sort.stars":"Stars","sort.name":"A – Z","sort.created":"Newest",
-    "proj.featured":"featured","exp.more":"Details",
+    "proj.featured":"featured","exp.more":"Details","proj.live":"Live","proj.open":"Open ↗",
     "clubs.title":"Clubs & communities",
     "cv.title":"Résumé","cv.education":"Education","cv.experience":"Experience","cv.tech":"Technologies",
     "cv.courses":"Relevant coursework","cv.languages":"Languages","cv.note":"Full version in the PDF",
@@ -809,7 +878,7 @@ const T = {
     "game.won":"Hepsini topladın","game.over":"Oyun bitti","game.retry":"Tekrar oyna","game.close":"Kapat",
     "proj.title":"Projeler","proj.search":"Ara…","proj.allLangs":"Tüm diller","proj.none":"Eşleşen proje yok.",
     "sort.updated":"Son güncellenen","sort.stars":"Yıldız","sort.name":"A – Z","sort.created":"En yeni",
-    "proj.featured":"öne çıkan","exp.more":"Detaylar",
+    "proj.featured":"öne çıkan","exp.more":"Detaylar","proj.live":"Canlı","proj.open":"Aç ↗",
     "clubs.title":"Kulüpler ve topluluklar",
     "cv.title":"Özgeçmiş","cv.education":"Eğitim","cv.experience":"Deneyim","cv.tech":"Teknolojiler",
     "cv.courses":"İlgili dersler","cv.languages":"Diller","cv.note":"Tam sürüm PDF'te",
@@ -933,6 +1002,56 @@ function closeExp(){ $('#expModal').hidden = true; }
 $('#expClose').onclick = closeExp;
 $('#expModal').addEventListener('click', e=>{ if(e.target === $('#expModal')) closeExp(); });
 addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('#expModal').hidden) closeExp(); });
+
+/* ---------- proje detay pop-up ---------- */
+function openProj(name){
+  const r = REPOS.find(x=>x.name===name); if(!r) return;
+  $('#pjTitle').textContent = r.name;
+
+  const sub = [];
+  const ls = langsOf(r); if(ls.length) sub.push(ls.join(', '));
+  sub.push(new Date(r.pushed_at).toLocaleDateString(LOCALE,{month:'long',year:'numeric'}));
+  if(r.stargazers_count) sub.push('★ ' + r.stargazers_count);
+  $('#pjSub').textContent = sub.join('  ·  ');
+
+  const desc = descOf(r);
+  $('#pjDesc').textContent = desc || '';
+  $('#pjDesc').hidden = !desc;
+
+  const hl = (CONFIG.highlights||{})[r.name];
+  const items = hl ? (L(hl)||[]) : [];
+  $('#pjList').innerHTML = items.map(x=>`<li>${esc(x)}</li>`).join('');
+  $('#pjList').hidden = !items.length;
+
+  const liveUrl = (CONFIG.live||{})[r.name];
+  const primary = liveUrl || r.html_url;
+  const lk = $('#pjLink');
+  lk.href = primary;
+  lk.setAttribute('aria-label', t('proj.open'));
+
+  let foot = `<a href="${r.html_url}" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.1-.75.4-1.27.73-1.56-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+      GitHub</a>`;
+  if(liveUrl) foot += `<a href="${liveUrl}" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      ${esc(t('proj.live'))}</a>`;
+  $('#pjLinks').innerHTML = foot;
+
+  $('#projModal').hidden = false;
+  $('#pjClose').focus();
+}
+function closeProj(){ $('#projModal').hidden = true; }
+$('#pjClose').onclick = closeProj;
+$('#projModal').addEventListener('click', e=>{ if(e.target === $('#projModal')) closeProj(); });
+addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('#projModal').hidden) closeProj(); });
+
+/* kart tıklaması modalı açar (href orta-tık/SEO için durur) */
+$('#projects').addEventListener('click', e=>{
+  if(e.target.closest('a') && e.target.closest('a') !== e.target.closest('.proj')) return;
+  const card = e.target.closest('.proj'); if(!card) return;
+  e.preventDefault();
+  openProj(card.dataset.repo);
+});
 
 function setPhoto(src){
   const img = new Image();
@@ -1484,7 +1603,7 @@ function render(){
       `<span class="lang"><i style="background:${langColor(l)}"></i>${esc(l)}</span>`).join('');
     const desc = descOf(r);
     const topics = (r.topics||[]).slice(0,4).map(t=>`<span class="topic">${esc(t)}</span>`).join('');
-    return `<a class="proj" href="${r.html_url}" target="_blank" rel="noopener">
+    return `<a class="proj" href="${r.html_url}" target="_blank" rel="noopener" data-repo="${esc(r.name)}">
       <div>
         <div class="ptitle">
           <span class="n">${esc(r.name)}</span>
