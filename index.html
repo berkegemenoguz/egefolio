@@ -345,6 +345,41 @@ select{border:1px solid var(--line); background:var(--panel); color:var(--text);
       border-radius:6px; font-size:14.5px;
       font-family:'Newsreader',Georgia,serif}
 
+/* dil dağılımı (halka grafik) — renkler doğrulandı: komşu CVD ΔE ≥ 8, normal ≥ 15, iki temada */
+:root{ --lc-js:#eda100; --lc-html:#4a3aa7; --lc-go:#1baf7a; --lc-py:#2a78d6; --lc-java:#eb6834; --lc-other:#bdb6ac; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --lc-js:#c98500; --lc-html:#9085e9; --lc-go:#199e70; --lc-py:#3987e5; --lc-java:#d95926; --lc-other:#5b5650; }
+}
+:root[data-theme="dark"]{ --lc-js:#c98500; --lc-html:#9085e9; --lc-go:#199e70; --lc-py:#3987e5; --lc-java:#d95926; --lc-other:#5b5650; }
+.stackgrid{display:grid; grid-template-columns:minmax(0,1fr) 320px; column-gap:48px; align-items:start}
+.lchart{display:grid; grid-template-columns:1fr; row-gap:18px; justify-items:center;
+        position:sticky; top:84px; padding:22px 20px 18px;
+        border:1px solid var(--line-soft); border-radius:var(--r); background:var(--panel)}
+.lchart h4{justify-self:stretch}
+@media(max-width:900px){
+  .stackgrid{grid-template-columns:1fr; row-gap:30px}
+  .lchart{position:static}
+}
+.lchart h4{grid-column:1/-1; margin:0}
+.ldonut{position:relative; width:200px; height:200px}
+.ldonut svg{width:100%; height:100%; display:block; overflow:visible}
+.ldonut path{cursor:pointer; transition:opacity .18s ease, transform .18s ease; transform-origin:100px 100px; outline:none}
+.ldonut.hov path{opacity:.32}
+.ldonut.hov path.on{opacity:1; transform:scale(1.035)}
+.ldonut .ctr{position:absolute; inset:0; display:grid; place-content:center; text-align:center; pointer-events:none}
+.ldonut .ctr .v{font-family:'Newsreader',Georgia,serif; font-size:27px; line-height:1}
+.ldonut .ctr .k{font-size:11.5px; color:var(--faint); margin-top:5px}
+.llegend{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; width:100%}
+.llegend li{display:grid; grid-template-columns:10px 16px minmax(0,1fr) auto; align-items:center; column-gap:11px;
+            padding:7px 10px; border-radius:8px; transition:background .15s}
+.llegend li.on{background:var(--panel-2)}
+.llegend .sw{width:10px; height:10px; border-radius:2px}
+.llegend .lg{width:16px; height:16px; background:var(--dim);
+             -webkit-mask:var(--ic) center/contain no-repeat; mask:var(--ic) center/contain no-repeat}
+.llegend .nm{font-size:14px; color:var(--text)}
+.llegend .pc{font-size:13.5px; color:var(--dim); font-variant-numeric:tabular-nums}
+
+
 /* tech stack */
 .tcat{margin-bottom:22px}
 .tcat:last-child{margin-bottom:0}
@@ -482,7 +517,14 @@ footer a{color:var(--dim)}
   <div class="shead">
     <h2 data-i18n="stack.title">Tech stack</h2>
   </div>
-  <div id="stackBody"></div>
+  <div class="stackgrid">
+    <div id="stackBody"></div>
+    <div class="lchart" id="langChart" hidden>
+      <h4 data-i18n="stack.langs">Code by language</h4>
+      <div class="ldonut" id="lDonut"></div>
+      <ul class="llegend" id="lLegend"></ul>
+    </div>
+  </div>
 </section>
 
 <!-- ===== AKTİVİTE ===== -->
@@ -848,7 +890,7 @@ const MONTHS_BY = {
 };
 const T = {
   en:{
-    "nav.about":"About","nav.activity":"Activity","nav.projects":"Projects","nav.clubs":"Clubs","nav.cv":"CV","nav.stack":"Stack","stack.title":"Tech stack",
+    "nav.about":"About","nav.activity":"Activity","nav.projects":"Projects","nav.clubs":"Clubs","nav.cv":"CV","nav.stack":"Stack","stack.title":"Tech stack","stack.langs":"Code by language","stack.other":"Other","stack.ofcode":"of code",
     "btn.email":"Email",
     "cal.title":"Commit calendar","cal.note":"live from GitHub · click a square","cal.loading":"Loading…",
     "day.mon":"Mon","day.wed":"Wed","day.fri":"Fri",
@@ -868,7 +910,7 @@ const T = {
     "err.net":"Couldn't load GitHub data. Check your connection and refresh."
   },
   tr:{
-    "nav.about":"Hakkımda","nav.activity":"Aktivite","nav.projects":"Projeler","nav.clubs":"Kulüpler","nav.cv":"CV","nav.stack":"Yığın","stack.title":"Teknoloji yığını",
+    "nav.about":"Hakkımda","nav.activity":"Aktivite","nav.projects":"Projeler","nav.clubs":"Kulüpler","nav.cv":"CV","nav.stack":"Yığın","stack.title":"Teknoloji yığını","stack.langs":"Dillere göre kod","stack.other":"Diğer","stack.ofcode":"kod",
     "btn.email":"E-posta",
     "cal.title":"Commit takvimi","cal.note":"GitHub'dan canlı · bir kareye tıkla","cal.loading":"Yükleniyor…",
     "day.mon":"Pzt","day.wed":"Çar","day.fri":"Cum",
@@ -954,6 +996,98 @@ function renderCV(){
   $('#cvInterests').innerHTML = chips(L(CONFIG.interests));
   $('#cvLangs').innerHTML     = chips(L(CONFIG.languages));
 }
+/* Dil dağılımı. Halka SABİT sırada çizilir (komşu renkler bu sıraya göre doğrulandı);
+   buradaki 5 dil dışındaki her şey "Diğer"e katlanır, en fazla 6 dilim. */
+const LANG_SLOTS = [
+  ['JavaScript','--lc-js','javascript'], ['HTML','--lc-html','html5'], ['Go','--lc-go','go'],
+  ['Python','--lc-py','python'], ['Java','--lc-java','openjdk']
+];
+function renderLangChart(){
+  const box = document.getElementById('langChart'); if(!box) return;
+  const tot = {}; let sum = 0;
+  (typeof REPOS !== 'undefined' ? REPOS : []).forEach(r=>{
+    Object.entries(r._langBytes || {}).forEach(([l,b])=>{ tot[l] = (tot[l]||0) + b; sum += b; });
+  });
+  if(!sum){ box.hidden = true; return; }
+
+  const segs = LANG_SLOTS.map(([n,v,ic])=>({ name:n, v, ic, b: tot[n]||0 })).filter(x=>x.b > 0);
+  const known = new Set(segs.map(x=>x.name));
+  const other = Object.entries(tot).filter(([l])=>!known.has(l)).reduce((a,[,b])=>a+b, 0);
+  if(other > 0) segs.push({ name: t('stack.other'), v:'--lc-other', ic:null, b: other, other:true });
+
+  const pct = b => { const n = (b/sum*100).toLocaleString(LOCALE,{minimumFractionDigits:1, maximumFractionDigits:1}); return lang==='tr' ? '%'+n : n+'%'; };
+  const size = b => b >= 1048576 ? (b/1048576).toLocaleString(LOCALE,{maximumFractionDigits:1})+' MB'
+                                 : Math.round(b/1024).toLocaleString(LOCALE)+' KB';
+
+  // halka
+  const cx=100, cy=100, R=94, r=64, midR=(R+r)/2, gap = segs.length > 1 ? 2/midR : 0;
+  const P = (rad,a)=> (cx+rad*Math.cos(a)).toFixed(2)+' '+(cy+rad*Math.sin(a)).toFixed(2);
+  let a0 = -Math.PI/2;
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 200 200');
+  segs.forEach((s,i)=>{
+    const ang = Math.min(s.b/sum*2*Math.PI, 2*Math.PI - 1e-4);
+    const s0 = a0 + gap/2, s1 = a0 + ang - gap/2; a0 += ang;
+    if(s1 <= s0) return;
+    const lg = (s1-s0) > Math.PI ? 1 : 0;
+    const path = document.createElementNS(NS,'path');
+    path.setAttribute('d', `M ${P(R,s0)} A ${R} ${R} 0 ${lg} 1 ${P(R,s1)} L ${P(r,s1)} A ${r} ${r} 0 ${lg} 0 ${P(r,s0)} Z`);
+    path.setAttribute('fill', `var(${s.v})`);
+    path.setAttribute('tabindex','0');
+    path.setAttribute('aria-label', `${s.name} ${pct(s.b)}`);
+    path.dataset.i = i;
+    svg.appendChild(path);
+  });
+  const donut = document.getElementById('lDonut');
+  donut.replaceChildren(svg);
+  const ctr = document.createElement('div'); ctr.className = 'ctr';
+  const cv = document.createElement('div'); cv.className = 'v'; cv.textContent = size(sum);
+  const ck = document.createElement('div'); ck.className = 'k'; ck.textContent = t('stack.ofcode');
+  ctr.append(cv, ck); donut.appendChild(ctr);
+
+  // legend: yüzdeye göre sıralı, "Diğer" en sonda (her değer burada da okunur, tooltip şart değil)
+  const order = segs.map((s,i)=>({s,i})).sort((x,y)=> (x.s.other?1:0)-(y.s.other?1:0) || y.s.b-x.s.b);
+  const ul = document.getElementById('lLegend'); ul.replaceChildren();
+  order.forEach(({s,i})=>{
+    const li = document.createElement('li'); li.dataset.i = i;
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = `var(${s.v})`;
+    const lg = document.createElement('span'); lg.className = 'lg';
+    if(s.ic) lg.style.setProperty('--ic', `url(https://cdn.jsdelivr.net/npm/simple-icons@13/icons/${s.ic}.svg)`);
+    else lg.style.background = 'transparent';
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = s.name;
+    const pc = document.createElement('span'); pc.className = 'pc'; pc.textContent = pct(s.b);
+    li.append(sw, lg, nm, pc); ul.appendChild(li);
+  });
+
+  // hover / odak: dilim ile legend satırı birlikte vurgulanır, tooltip değer önde
+  const tip = document.getElementById('tip');
+  const setOn = (i, x, y)=>{
+    donut.classList.add('hov');
+    svg.querySelectorAll('path').forEach(p=>p.classList.toggle('on', +p.dataset.i === i));
+    ul.querySelectorAll('li').forEach(l=>l.classList.toggle('on', +l.dataset.i === i));
+    const s = segs[i]; const b = document.createElement('b'); b.textContent = pct(s.b);
+    tip.replaceChildren(b, document.createTextNode(`  ${s.name} · ${size(s.b)}`));
+    tip.style.left = x + 'px'; tip.style.top = y + 'px'; tip.classList.add('show');
+  };
+  const clear = ()=>{
+    donut.classList.remove('hov');
+    svg.querySelectorAll('path').forEach(p=>p.classList.remove('on'));
+    ul.querySelectorAll('li').forEach(l=>l.classList.remove('on'));
+    tip.classList.remove('show');
+  };
+  svg.querySelectorAll('path').forEach(p=>{
+    p.addEventListener('pointermove', e=> setOn(+p.dataset.i, e.clientX, e.clientY));
+    p.addEventListener('pointerleave', clear);
+    p.addEventListener('focus', ()=>{ const bb = p.getBoundingClientRect(); setOn(+p.dataset.i, bb.left+bb.width/2, bb.top); });
+    p.addEventListener('blur', clear);
+  });
+  ul.querySelectorAll('li').forEach(l=>{
+    l.addEventListener('pointerenter', ()=>{ const bb = l.getBoundingClientRect(); setOn(+l.dataset.i, bb.left+bb.width/2, bb.top); });
+    l.addEventListener('pointerleave', clear);
+  });
+  box.hidden = false;
+}
+
 function renderStack(){
   $('#stackBody').innerHTML = (CONFIG.techStack||[]).map(g=>`
     <div class="tcat">
@@ -977,7 +1111,7 @@ function applyLang(next){
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.dataset.i18nPh); });
   $('#langBtn').textContent = lang.toUpperCase();
 
-  renderProfile(); renderClubs(); renderCV(); renderStack();
+  renderProfile(); renderClubs(); renderCV(); renderStack(); renderLangChart();
   if(typeof renderFacts==='function') renderFacts();
   if(typeof rebuildCalendar==='function') rebuildCalendar();
   if(typeof REPOS!=='undefined' && REPOS.length){ renderProjCount(); buildLangFilter(); render(); }
@@ -1535,10 +1669,12 @@ async function loadLanguages(){
     try{
       const d = await api(r.languages_url, 'lang:' + r.name);
       r._langs = Object.entries(d).sort((a,b)=>b[1]-a[1]).map(([name])=>name);
+      r._langBytes = d;
     }catch(e){ /* limit veya ağ hatası: ana dile düşer */ }
   }));
   buildLangFilter();
   render();
+  renderLangChart();
 }
 
 function buildLangFilter(){
@@ -1669,6 +1805,17 @@ buildYears();
 loadProfile();
 loadCalendar(selectedYear);
 loadRepos();
+
+/* ---------- easter egg: geliştirici konsolu ---------- */
+(function(){
+  const repo = `https://github.com/${CONFIG.github}/egefolio`;
+  const big  = "font-family:Georgia,'Newsreader',serif; font-size:20px; font-style:italic; color:#c0643a; padding:6px 0 2px";
+  const sub  = "font-family:Georgia,serif; font-size:13px; color:#9a938a; padding-bottom:8px";
+  const body = "font-family:ui-monospace,Menlo,monospace; font-size:12px; color:#8b847c";
+  console.log("%cSite baya basit, neyi merak ettin ki?", big);
+  console.log("%c(Pretty simple site. What were you curious about?)", sub);
+  console.log("%cKaynak kod / source → " + repo, body);
+})();
 </script>
 </body>
 </html>
