@@ -708,8 +708,8 @@ const CONFIG = {
       en:"A dependency-free Go package for validating, normalising and formatting Türkiye-specific data — national IDs (TCKN/VKN), IBANs, licence plates and phone numbers — plus Turkish-aware text helpers (correct İ/ı casing, slugify).",
       tr:"Türkiye'ye özgü verileri doğrulayan, normalleştiren ve biçimlendiren bağımlılıksız bir Go paketi — kimlik numaraları (TCKN/VKN), IBAN, plaka ve telefon numaraları — ayrıca Türkçe'ye duyarlı metin yardımcıları (doğru İ/ı büyük-küçük harf, slugify)." },
     "ege-balancer": {
-      en:"A modular HTTP reverse proxy and load balancer written in Go. Distributes traffic across backends with round-robin, least-connections and weighted strategies; active/passive health checks, Prometheus metrics and SIGHUP config reload.",
-      tr:"Go ile yazılmış modüler bir HTTP ters vekil sunucusu ve yük dengeleyici. Round robin, en az bağlantı ve ağırlıklı round robin algoritmaları; aktif/pasif sağlık kontrolü, Prometheus metrikleri ve SIGHUP ile yapılandırma yenileme." },
+      en:"A modular HTTP reverse proxy and load balancer written in Go, shipped at v1.3.1. Spreads traffic with round robin, least connections (power of two choices) or smooth weighted round robin; active and passive health checks, circuit breaker and retry budget, Prometheus metrics with Grafana dashboards, and config reload on SIGHUP without dropping a connection.",
+      tr:"Go ile yazılmış, v1.3.1 sürümüne ulaşmış modüler bir HTTP ters vekil sunucusu ve yük dengeleyici. Trafiği round robin, en az bağlantı (rastgele iki adaydan az meşgul olanı) veya yumuşatılmış ağırlıklı round robin ile dağıtır; aktif ve pasif sağlık kontrolü, devre kesici ve yeniden deneme bütçesi, Prometheus metrikleri ve Grafana panoları, bağlantı düşürmeden SIGHUP ile yapılandırma yenileme." },
     "borsadostu": {
       en:"A stock-market analysis web app for students and small investors. Visualises price history and technical indicators in Python with Plotly and Matplotlib.",
       tr:"Öğrenciler ve küçük ölçekli yatırımcılar için borsa analiz web uygulaması. Python tarafında Plotly ve Matplotlib ile fiyat geçmişi ve teknik göstergeleri görselleştiriyor." },
@@ -751,12 +751,16 @@ const CONFIG = {
   /* Pop-up'ta gösterilecek öne çıkan özellikler (repo adına göre, iki dilli). İsteğe bağlı. */
   highlights: {
     "ege-balancer": {
-      en:["Round-robin, least-connections and weighted balancing strategies, selectable from config.",
-          "Active and passive health checks that drop unhealthy backends automatically.",
-          "Structured JSON logs, a Prometheus /metrics endpoint, graceful shutdown and SIGHUP config reload."],
-      tr:["Yapılandırmadan seçilebilen round-robin, en az bağlantı ve ağırlıklı dengeleme stratejileri.",
-          "Sağlıksız sunucuları otomatik devre dışı bırakan aktif ve pasif sağlık kontrolleri.",
-          "Yapısal JSON loglar, Prometheus /metrics ucu, zarif kapanış ve SIGHUP ile config yenileme."]
+      en:["Three balancing strategies, chosen in configuration: round robin, least connections by the power of two choices, and smooth weighted round robin.",
+          "Resilience: active and passive health checks feeding the same thresholds, retry_next_backend / fail_fast / circuit_breaker policies, and a retry budget that caps retries as a share of in-flight requests.",
+          "Protection: per-client rate limiting, a connection cap, a request body limit, per-phase timeouts, and refusal of ambiguously framed requests.",
+          "Operability: structured logs with a request ID, Prometheus metrics, liveness and readiness endpoints, three Grafana dashboards, and config reload on SIGHUP without dropping a connection.",
+          "Ships as a 22.6 MB distroless container running as a non-root user, published on every tag."],
+      tr:["Yapılandırmadan seçilen üç dengeleme stratejisi: round robin, rastgele iki adaydan az meşgul olanı seçen en az bağlantı ve yumuşatılmış ağırlıklı round robin.",
+          "Dayanıklılık: aynı eşikleri besleyen aktif ve pasif sağlık kontrolleri, retry_next_backend / fail_fast / circuit_breaker politikaları ve yeniden denemeleri uçuştaki istek sayısının bir oranıyla sınırlayan yeniden deneme bütçesi.",
+          "Koruma: istemci başına hız sınırı, bağlantı üst sınırı, istek gövdesi sınırı, her aşama için zaman aşımı ve belirsiz biçimlenmiş isteklerin arka uca ulaşmadan reddedilmesi.",
+          "İşletilebilirlik: istek kimliği taşıyan yapısal loglar, Prometheus metrikleri, canlılık ve hazırlık uçları, üç Grafana panosu ve bağlantı düşürmeden SIGHUP ile yapılandırma yenileme.",
+          "Her sürümde yayınlanan, root olmayan kullanıcıyla çalışan 22,6 MB'lık distroless konteyner olarak dağıtılıyor."]
     },
     "TOROS": {
       en:["API-first Flask + PostgreSQL backend; two frontends (vanilla JS and a React/Vite SPA) share one /api contract.",
@@ -801,21 +805,21 @@ const CONFIG = {
       d:{en:"2023 — 2027 (expected)",tr:"2023 — 2027 (beklenen)"} }
   ],
   experience: [
-    { t:{en:"IS Intern",tr:"BS Stajyeri"}, org:"Horoz Lojistik", ongoing:true,
-      s:{en:"Building TOROS, a route-optimisation system, and ege-balancer, a reverse proxy / load balancer; working on distributed systems and network infrastructure.",
-         tr:"Rota optimizasyon sistemi TOROS ve ters proxy / yük dengeleyici ege-balancer'ı geliştiriyorum; dağıtık sistemler ve ağ altyapısı üzerine çalışıyorum."},
+    { t:{en:"IS Intern",tr:"BS Stajyeri"}, org:"Horoz Lojistik",
+      s:{en:"Built TOROS, a route-optimisation system, and ege-balancer, a reverse proxy / load balancer; worked on distributed systems and network infrastructure.",
+         tr:"Rota optimizasyon sistemi TOROS ve ters proxy / yük dengeleyici ege-balancer'ı geliştirdim; dağıtık sistemler ve ağ altyapısı üzerine çalıştım."},
       d:{en:"August — September 2026 · İstanbul",tr:"Ağustos — Eylül 2026 · İstanbul"},
       details:{
         en:[
           "TOROS (Traffic-Oriented Route Optimisation System): Developed a route-optimisation solution that analyses real-time and predictive traffic levels to improve delivery efficiency for cargo and logistics companies.",
           "Cost & time optimisation: Integrated a range of algorithms to compute the cheapest and time-shortest routes, cutting operational costs across heavy delivery workloads.",
-          "ege-balancer (reverse proxy & load balancer): Designed and coded a custom reverse proxy / load balancer to put data communication, network protocols and cross-server load distribution in distributed systems into practice.",
+          "ege-balancer (reverse proxy & load balancer): Designed, built and released a custom reverse proxy / load balancer (v1.3.1) — three balancing strategies, active and passive health checks, circuit breaker and retry budget, Prometheus metrics and Grafana dashboards — putting data communication, network protocols and cross-server load distribution in distributed systems into practice.",
           "System architecture & network management: Studied server-traffic routing, high availability and uninterrupted data-flow mechanisms in depth, working on end-to-end infrastructure performance."
         ],
         tr:[
           "TOROS (Trafik Odaklı Rota Optimizasyon Sistemi): Kargo ve lojistik şirketlerinin teslimat verimliliğini artırmak amacıyla anlık ve öngörüye dayalı trafik seviyelerini analiz eden rota optimizasyon çözümünü geliştirdim.",
           "Maliyet ve Süre Optimizasyonu: Çeşitli algoritmalar entegre ederek yoğun teslimat süreçlerinde operasyon maliyetlerini düşüren en ucuz ve süre bazında en kısa güzergahların hesaplanmasını sağladım.",
-          "ege-balancer (Reverse Proxy & Load Balancer): Dağıtık sistemlerdeki veri iletişimini, ağ protokollerini ve sunucular arası yük dağıtımını pratikleştirmek için özel bir ters proxy / yük dengeleyici sistemi tasarlayıp kodladım.",
+          "ege-balancer (Reverse Proxy & Load Balancer): Dağıtık sistemlerdeki veri iletişimini, ağ protokollerini ve sunucular arası yük dağıtımını pratikleştirmek için özel bir ters proxy / yük dengeleyici sistemi tasarlayıp kodladım ve v1.3.1 sürümüyle tamamladım: üç dengeleme stratejisi, aktif ve pasif sağlık kontrolü, devre kesici ve yeniden deneme bütçesi, Prometheus metrikleri ve Grafana panoları.",
           "Sistem Mimarisi ve Ağ Yönetimi: Sunucu trafiği yönlendirme, yüksek erişilebilirlik (high availability) ve kesintisiz veri akışı mekanizmalarını derinlemesine inceleyerek uçtan uca altyapı performansı üzerine çalıştım."
         ]
       } },
